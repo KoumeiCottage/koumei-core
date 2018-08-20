@@ -5,7 +5,6 @@ const { EventEmitter } = require('events')
 const _ = require('lodash')
 const changeCase = require('change-case')
 const validate = require('validate.js')
-const gatewayLib = require('./gateway')
 const { AschCore } = require('asch-smartdb')
 const slots = require('./utils/slots')
 const amountHelper = require('./utils/amount')
@@ -69,17 +68,6 @@ async function loadModels(dir) {
   })
 
   await app.sdb.init(schemas)
-
-  // HARDCODE HOTFIX upgrade group_members schema
-  async function updateSchemaIfNoRecords(name) {
-    const count = await app.sdb.count(name, {})
-    if (count === 0) {
-      const schema = schemas.find((schema) => schema.modelName === name)
-      await app.sdb.updateSchema(schema)
-    }
-  }
-  await updateSchemaIfNoRecords('GroupMember')
-  await updateSchemaIfNoRecords('GatewayAccount')
 }
 
 async function loadContracts(dir) {
@@ -236,6 +224,7 @@ module.exports = async function runtime(options) {
   }
 
   app.getRealTime = epochTime => slots.getRealTime(epochTime)
+  app.getTime = time => slots.getTime(time)
 
   app.registerHook = (name, func) => {
     app.hooks[name] = func
@@ -267,13 +256,6 @@ module.exports = async function runtime(options) {
       }
     }
     if (sigCount < m) throw new Error('Signatures not enough')
-  }
-
-  app.gateway = {
-    createMultisigAddress: (gateway, m, accounts) =>
-      gatewayLib.getGatewayUtil(gateway).createMultisigAccount(m, accounts),
-    isValidAddress: (gateway, address) =>
-      gatewayLib.getGatewayUtil(gateway).isValidAddress(address),
   }
 
   app.isCurrentBookkeeper = addr => modules.delegates.getBookkeeperAddresses().has(addr)
@@ -327,32 +309,5 @@ module.exports = async function runtime(options) {
   app.contractTypeMapping[11] = 'basic.vote'
   app.contractTypeMapping[12] = 'basic.unvote'
 
-  app.contractTypeMapping[100] = 'uia.registerIssuer'
-  app.contractTypeMapping[101] = 'uia.registerAsset'
-  app.contractTypeMapping[102] = 'uia.issue'
-  app.contractTypeMapping[103] = 'uia.transfer'
-
-  app.contractTypeMapping[200] = 'chain.register'
-  app.contractTypeMapping[201] = 'chain.replaceDelegate'
-  app.contractTypeMapping[202] = 'chain.addDelegate'
-  app.contractTypeMapping[203] = 'chain.removeDelegate'
-  app.contractTypeMapping[204] = 'chain.deposit'
-  app.contractTypeMapping[205] = 'chain.withdrawal'
-
-  app.contractTypeMapping[300] = 'proposal.propose'
-  app.contractTypeMapping[301] = 'proposal.vote'
-  app.contractTypeMapping[302] = 'proposal.activate'
-
-  app.contractTypeMapping[400] = 'gateway.openAccount'
-  app.contractTypeMapping[401] = 'gateway.registerMember'
-  app.contractTypeMapping[402] = 'gateway.deposit'
-  app.contractTypeMapping[403] = 'gateway.withdrawal'
-  app.contractTypeMapping[404] = 'gateway.submitWithdrawalTransaction'
-  app.contractTypeMapping[405] = 'gateway.submitWithdrawalSignature'
-  app.contractTypeMapping[406] = 'gateway.submitOutTransactionId'
-
-  app.contractTypeMapping[500] = 'group.vote'
-  app.contractTypeMapping[501] = 'group.activate'
-  app.contractTypeMapping[502] = 'group.addMember'
-  app.contractTypeMapping[503] = 'group.removeMember'
+  require(path.resolve(appDir, 'init.js'))()
 }

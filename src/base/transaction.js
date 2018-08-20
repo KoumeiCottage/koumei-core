@@ -224,7 +224,7 @@ Transaction.prototype.verify = async (context) => {
 
   const feeCalculator = feeCalculators[trs.type]
   if (!feeCalculator) return 'Fee calculator not found'
-  const minFee = 100000000 * feeCalculator(trs)
+  const minFee = constants.fixedPoint * feeCalculator(trs)
   if (trs.fee < minFee) return 'Fee not enough'
 
   try {

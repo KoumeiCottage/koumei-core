@@ -796,13 +796,11 @@ Blocks.prototype.onReceiveVotes = (votes) => {
 }
 
 Blocks.prototype.getSupply = () => {
-  const height = priv.lastBlock.height
-  return priv.blockStatus.calcSupply(height)
+  return constants.totalAmount
 }
 
 Blocks.prototype.getCirculatingSupply = () => {
-  const height = priv.lastBlock.height
-  return priv.blockStatus.calcSupply(height)
+  return constants.totalAmount
 }
 
 Blocks.prototype.isCollectingVotes = () => priv.isCollectingVotes
@@ -1024,7 +1022,7 @@ shared.getSupply = (req, cb) => {
     return cb('Blockchain is loading')
   }
   const height = priv.lastBlock.height
-  return cb(null, { supply: priv.blockStatus.calcSupply(height) })
+  return cb(null, { supply: constants.totalAmount })
 }
 
 shared.getStatus = (req, cb) => {
@@ -1037,7 +1035,7 @@ shared.getStatus = (req, cb) => {
     fee: library.base.block.calculateFee(),
     milestone: priv.blockStatus.calcMilestone(height),
     reward: priv.blockStatus.calcReward(height),
-    supply: priv.blockStatus.calcSupply(height),
+    supply: constants.totalAmount,
   })
 }
 

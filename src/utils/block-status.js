@@ -37,12 +37,7 @@ function BlockStatus() {
   }
 
   this.calcReward = (height) => {
-    const h = parseHeight(height)
-
-    if (h < rewardOffset || h <= 0) {
-      return 0
-    }
-    return milestones[this.calcMilestone(height)]
+    return 0
   }
 
   this.calcSupply = (h) => {

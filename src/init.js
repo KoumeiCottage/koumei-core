@@ -34,10 +34,7 @@ const moduleNames = [
   'transport',
   'delegates',
   'round',
-  'uia',
-  'chains',
   'blocks',
-  'gateway',
 ]
 
 const CIPHERS = `

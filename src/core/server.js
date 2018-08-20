@@ -31,11 +31,11 @@ priv.attachApi = () => {
   })
 
   router.get('/api/blocks/totalsupply', (req, res) => {
-    res.status(200).send(`${modules.blocks.getSupply() / 100000000}`)
+    res.status(200).send(`${modules.blocks.getSupply() / 1000000}`)
   })
 
   router.get('/api/blocks/circulatingsupply', (req, res) => {
-    res.status(200).send(`${modules.blocks.getCirculatingSupply() / 100000000}`)
+    res.status(200).send(`${modules.blocks.getCirculatingSupply() / 1000000}`)
   })
 
   router.get('/chains/:id', (req, res) => {
