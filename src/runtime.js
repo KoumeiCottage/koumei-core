@@ -309,5 +309,10 @@ module.exports = async function runtime(options) {
   app.contractTypeMapping[11] = 'basic.vote'
   app.contractTypeMapping[12] = 'basic.unvote'
 
+  app.contractTypeMapping[100] = 'uia.registerIssuer'
+  app.contractTypeMapping[101] = 'uia.registerAsset'
+  app.contractTypeMapping[102] = 'uia.issue'
+  app.contractTypeMapping[103] = 'uia.transfer'
+
   require(path.resolve(appDir, 'init.js'))()
 }
