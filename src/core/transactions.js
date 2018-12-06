@@ -295,7 +295,7 @@ Transactions.prototype.applyUnconfirmedTransactionAsync = async (transaction) =>
     sender = app.sdb.create('Account', {
       address: senderId,
       name: null,
-      xas: 0,
+      kmc: 0,
     })
   }
 
@@ -538,7 +538,7 @@ shared.getTransactions = (req, cb) => {
       const type = Number(query.type)
       if (type !== 0 && type !== 14 ) return cb('invalid transaction type')
 
-      condition.currency = type === 0 ? 'XAS' : { $ne: 'XAS' }
+      condition.currency = type === 0 ? 'KMC' : { $ne: 'KMC' }
     }
     if (query.id) {
       condition.tid = query.id
