@@ -567,7 +567,7 @@ shared.getVoters = (req, cb) => {
         const lastBlock = modules.blocks.getLastBlock()
         const totalSupply = priv.blockStatus.calcSupply(lastBlock.height)
         for (const a of accounts) {
-          a.balance = a.xas
+          a.balance = a.kmc
           a.weightRatio = (a.weight * 100) / totalSupply
         }
         return cb(null, { accounts })
