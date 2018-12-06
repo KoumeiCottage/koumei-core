@@ -438,14 +438,14 @@ Blocks.prototype.applyRound = async (block) => {
     address = addressHelper.generateNormalAddress(pk)
     app.sdb.increase('Delegate', { fees: fee, rewards: reward }, { address })
     // TODO should account be all cached?
-    app.sdb.increase('Account', { xas: fee + reward }, { address })
+    app.sdb.increase('Account', { kmc: fee + reward }, { address })
   }
 
   const councilControl = 1
   if (councilControl) {
     const councilAddress = 'GADQ2bozmxjBfYHDQx3uwtpwXmdhafUdkN'
-    app.sdb.createOrLoad('Account', { xas: 0, address: councilAddress, name: null })
-    app.sdb.increase('Account', { xas: fees + rewards }, { address: councilAddress })
+    app.sdb.createOrLoad('Account', { kmc: 0, address: councilAddress, name: null })
+    app.sdb.increase('Account', { kmc: fees + rewards }, { address: councilAddress })
   } else {
     const ratio = 1
 
