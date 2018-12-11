@@ -441,7 +441,7 @@ Blocks.prototype.applyRound = async (block) => {
     app.sdb.increase('Account', { kmc: fee + reward }, { address })
   }
 
-  const councilControl = 1
+  const councilControl = 0
   if (councilControl) {
     const councilAddress = 'GADQ2bozmxjBfYHDQx3uwtpwXmdhafUdkN'
     app.sdb.createOrLoad('Account', { kmc: 0, address: councilAddress, name: null })
